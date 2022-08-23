@@ -53,14 +53,6 @@
             </span>
             @enderror
         </div>
-        <div class="form-group m-2 p-2">
-            <label for="category_id">Category</label>
-            <select class="form-control" name="category_id" id="category_id">
-                @foreach ($categories as $category)
-                    <option value="{{$category->id}}">{{$category->name}}</option>
-                @endforeach
-            </select>
-        </div>
 
         <div class="form-group m-2 p-2">
             <label for="project_title">Skills</label>

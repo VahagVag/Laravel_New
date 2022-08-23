@@ -88,7 +88,6 @@ class HomePageController extends Controller
         $project->title = $request->title;
         $project->description = $request->description;
         $project->skills = $request->skills;
-        $project->category_id = $request->category_id;
         $project->user_id = $request->user()->id;
         $project->url = $request->url;
         $project->save();

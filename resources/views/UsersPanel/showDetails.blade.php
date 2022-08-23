@@ -21,8 +21,6 @@
 
                     <h3 class="card-title">{{$project->title}}</h3>
 
-                    <h4 class="card-text"><b>Category-{{$project->category->name}}</b></h4>
-                    <hr>
 
                     <p class="card-text">{{$project->description}}</p>
                     <hr>

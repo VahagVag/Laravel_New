@@ -28,7 +28,6 @@
     <tr>
         <th scope="col">ID</th>
         <th scope="col">Title</th>
-        <th scope="col">Category</th>
         <th scope="col">Url Page</th>
         <th scope="col">Description</th>
         <th scope="col">Thumbnail</th>
@@ -41,7 +40,6 @@
     <tr>
         <th scope="row">{{$project->id}}</th>
         <td>{{$project->title}}</td>
-        <td>{{$project->category->name}}</td>
         <td>{{$project->url}}</td>
         <td>{{$project->description}}</td>
         <td><img style="height: 100px; width: 200px " src="/images/{{$project->thumbnail}}"/></td>

@@ -38,7 +38,6 @@
                     <th scope="col"> Skills</th>
                     <th scope="col"> Description</th>
                     <th scope="col">Url Page</th>
-                    <th scope="col"> Category</th>
                     <th scope="col"> Image</th>
                     <th scope="col"> Any</th>
                     <th scope="col" width="2"></th>
@@ -51,7 +50,6 @@
                         <td>{{$project->title}}</td>
                         <td>{{$project->description}}</td>
                         <td>{{$project->url}}</td>
-                        <td>{{$project->category->name}}</td>
                         <td><img src="/images/{{$project->thumbnail}}" width="90" height="auto"></td>
                         <td><a href="{{route('projects.detail', $project->id)}}" class="btn btn-success">Detail</a>,<a
                                 class="btn btn-primary" href="{{route('projects.edit',['id'=>$project->id])}}">Edit</a>

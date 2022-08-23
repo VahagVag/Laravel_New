@@ -65,7 +65,6 @@ class ResourceController extends Controller
         $project->description = $request->description;
         $project->url = $request->url;
         $project->skills = $request->skills;
-        $project->category_id = $request->category_id;
         $project->user_id = $request->user()->id;
 
         $project->save();
@@ -122,7 +121,6 @@ class ResourceController extends Controller
         $project->description = $request->description;
         $project->url = $request->url;
         $project->skills = $request->skills;
-        $project->category_id = $request->category_id;
 
         $project->save();
 
