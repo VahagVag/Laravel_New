@@ -8,6 +8,8 @@ use App\Models\Skill;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
+use App\Models\Payment;
+
 
 
 class HomePageController extends Controller
@@ -148,6 +150,7 @@ class HomePageController extends Controller
         return view('UsersPanel.edit',compact('project','categories'));
     }
 
+
     public function update(Request $request, $id)
 
     {
@@ -169,7 +172,6 @@ class HomePageController extends Controller
         $project->title = $request->title;
         $project->description = $request->description;
         $project->skills = $request->skills;
-        $project->category_id = $request->category_id;
         $project->url = $request->url;
 
         $project->save();
@@ -177,5 +179,18 @@ class HomePageController extends Controller
         return redirect()->route('projects.index')->with('success','Project Updated Successfully');
     }
 
+    public function purchase(){
+
+        $payment = Payment::where('user_id' , Auth::user()->id)->get();
+
+        $purchased_products = [];
+
+        foreach ($payment as $payed )
+        {
+           $sale = Project::where('id', $payed->project_id)->first();
+           array_push($purchased_products,$sale);
+   }
+        return view('UsersPanel.purchase',compact('payment'),compact('purchased_products'));
+    }
 
 }

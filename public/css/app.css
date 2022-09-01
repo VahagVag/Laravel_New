@@ -10035,3 +10035,70 @@ h3 {
       flex-direction: column;
     }
   }
+
+.button {
+    --background: #362a89;
+    --text: #fff;
+    --cart: #fff;
+    --tick: var(--background);
+    position: relative;
+    border: none;
+    background: none;
+    padding: 8px 28px;
+    border-radius: 8px;
+    -webkit-appearance: none;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    overflow: hidden;
+    cursor: pointer;
+    text-align: center;
+    min-width: 144px;
+    color: var(--text);
+    background: var(--background);
+    transform: scale(var(--scale, 1));
+    transition: transform 0.4s cubic-bezier(0.36, 1.01, 0.32, 1.27);
+}
+.button:active {
+    --scale: 0.95;
+}
+.button span {
+    font-size: 14px;
+    font-weight: 500;
+    display: block;
+    position: relative;
+    padding-left: 24px;
+    margin-left: -8px;
+    line-height: 26px;
+    transform: translateY(var(--span-y, 0));
+    transition: transform 0.7s ease;
+}
+.button span:before, .button span:after {
+    content: '';
+    width: var(--w, 2px);
+    height: var(--h, 14px);
+    border-radius: 1px;
+    position: absolute;
+    left: var(--l, 8px);
+    top: var(--t, 6px);
+    background: currentColor;
+    transform: scale(0.75) rotate(var(--icon-r, 0deg)) translateY(var(--icon-y, 0));
+    transition: transform 0.65s ease 0.05s;
+}
+.button span:after {
+    --w: 14px;
+    --h: 2px;
+    --l: 2px;
+    --t: 12px;
+}
+.button .cart {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -13px 0 0 -18px;
+    transform-origin: 12px 23px;
+    transform: translateX(-120px) rotate(-18deg);
+}
+.button .cart:before, .button .cart:after {
+    content: '';
+    position: absolute;
+}

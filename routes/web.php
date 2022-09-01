@@ -24,6 +24,14 @@ Route::post('/projects/store',[App\Http\Controllers\HomePageController::class,'s
 Route::delete('/projects/destroy',[App\Http\Controllers\HomePageController::class,'deleteProject'])->name('projects.destroy');
 Route::get('/projects/edit/{id}',[App\Http\Controllers\HomePageController::class,'edit'])->middleware(['auth','auth_user'])->name('projects.edit');
 Route::put('/projects/update/{id}',[App\Http\Controllers\HomePageController::class,'update'])->middleware(['auth','auth_user'])->name('projects.update');
+Route::get('/projects/purchase',[App\Http\Controllers\HomePageController::class,'purchase'])->middleware(['auth','auth_user'])->name('projects.purchase');
+
+
+// for payment
+Route::get('/payment/{id}',[App\Http\Controllers\PaymentController::class, 'index'])->name('projects.buy');
+Route::post('/charge',[App\Http\Controllers\PaymentController::class, 'charge']);
+Route::get('/confirm',[App\Http\Controllers\PaymentController::class, 'confirm']);
+
 
 
 Route::get('/search',[App\Http\Controllers\HomePageController::class, 'search']);
