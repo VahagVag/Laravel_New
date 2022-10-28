@@ -1,7 +1,45 @@
 <?php
 
+use App\Http\Livewire\HomeComponent;
+use App\Http\Livewire\ShopComponent;
+use App\Http\Livewire\CartComponent;
+use App\Http\Livewire\DetailsComponent;
+use App\Http\Livewire\CategoryComponent;
+use App\Http\Livewire\SearchComponent;
+use App\Http\Livewire\Admin\AdminDashboardComponent;
+use App\Http\Livewire\Admin\AdminCategoryComponent;
+use App\Http\Livewire\Admin\AdminAddCategoryComponent;
+use App\Http\Livewire\Admin\AdminEditCategoryComponent;
+use App\Http\Livewire\Admin\AdminProductComponent;
+use App\Http\Livewire\User\UserDashboardComponent;
+use App\Http\Livewire\Admin\AdminAddProductComponent;
+use App\Http\Livewire\Admin\AdminEditProductComponent;
+use App\Http\Livewire\CheckoutComponent;
+use App\Http\Livewire\Admin\AdminHomeSliderComponent;
+use App\Http\Livewire\Admin\AdminAddHomeSliderComponent;
+use App\Http\Livewire\Admin\AdminEditHomeSliderComponent;
+use App\Http\Livewire\Admin\AdminHomeCategoryComponent;
+use App\Http\Livewire\Admin\AdminSaleComponent;
+use App\Http\Livewire\Admin\AdminCouponsComponent;
+use App\Http\Livewire\Admin\AdminEditCouponComponent;
+use App\Http\Livewire\Admin\AdminAddCouponComponent;
+use App\Http\Livewire\Admin\AdminOrderComponent;
+use App\Http\Livewire\Admin\AdminOrderDetailsComponent;
+use App\Http\Livewire\WishlistCountComponent;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Auth;
+use App\Http\Livewire\WishlistComponent;
+use App\Http\Livewire\ThankyouComponent;
+use App\Http\Livewire\User\UserOrdersComponent;
+use App\Http\Livewire\User\UserOrdersDetailsComponent;
+use App\Http\Livewire\User\UserReviewComponent;
+use App\Http\Livewire\ContactComponent;
+use App\Http\Livewire\Admin\AdminContactComponent;
+use App\Http\Livewire\Admin\AdminSettingComponent;
+use App\Http\Controllers\PaymentController;
+use Omnipay\Omnipay;
+use App\Http\Controllers\PaypalController;
+use App\Http\Controllers\AboutUsController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -14,39 +52,75 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::resource('admin/projects1',\App\Http\Controllers\ResourceController::class)->middleware(['auth','auth_admin']);
 
 
-Route::get('/projects/index',[App\Http\Controllers\HomePageController::class, 'index'])->middleware(['auth','auth_user'])->name('projects.index');
-Route::get('/projects/index/{id}',[App\Http\Controllers\HomePageController::class, 'detail'])->middleware(['auth','auth_user'])->name('projects.detail');
-Route::get('/projects/create',[App\Http\Controllers\HomePageController::class,'create'])->middleware(['auth','auth_user'])->name('projects.create');
-Route::post('/projects/store',[App\Http\Controllers\HomePageController::class,'store'])->middleware(['auth','auth_user'])->name('projects.store');
-Route::delete('/projects/destroy',[App\Http\Controllers\HomePageController::class,'deleteProject'])->name('projects.destroy');
-Route::get('/projects/edit/{id}',[App\Http\Controllers\HomePageController::class,'edit'])->middleware(['auth','auth_user'])->name('projects.edit');
-Route::put('/projects/update/{id}',[App\Http\Controllers\HomePageController::class,'update'])->middleware(['auth','auth_user'])->name('projects.update');
-Route::get('/projects/purchase',[App\Http\Controllers\HomePageController::class,'purchase'])->middleware(['auth','auth_user'])->name('projects.purchase');
+Route::get('/',HomeComponent::class);
 
+Route::get('/shop', ShopComponent::class);
 
-// for payment
-Route::get('/payment/{id}',[App\Http\Controllers\PaymentController::class, 'index'])->name('projects.buy');
-Route::post('/charge',[App\Http\Controllers\PaymentController::class, 'charge']);
-Route::get('/confirm',[App\Http\Controllers\PaymentController::class, 'confirm']);
+Route::get('/cart', CartComponent::class)->name('product.cart');
 
+Route::get('/checkout',CheckoutComponent::class);
 
+Route::get('/product/{slug}',DetailsComponent::class)->name('product.details');
 
-Route::get('/search',[App\Http\Controllers\HomePageController::class, 'search']);
+Route::get('/product-category/{category_slug}',CategoryComponent::class)->name('product.category');
 
+Route::get('/search',SearchComponent::class)->name('product.search');
 
-Route::get('/admin/skills/create',[App\Http\Controllers\AdminSkillController::class, 'create'])->name('admin.skills.create');
-Route::post('/admin/skills/store',[App\Http\Controllers\AdminSkillContAdminSkillControllerroller::class, 'store'])->name('admin.skills.store');
-Route::get('/admin/skills/index',[App\Http\Controllers\AdminSkillController::class, 'index'])->name('admin.skills.index');
-Route::delete('/admin/skills/destroy/{id}',[App\Http\Controllers\AdminSkillController::class, 'destroy'])->name('admin.skills.destroy');
+Route::get('/wishlist',WishlistComponent::class)->name('product.wishlist');
 
+Route::get('/thankyou',ThankyouComponent::class)->name('thankyou');
 
+Route::get('/contact-us',ContactComponent::class)->name('contact');
 
-Auth::routes();
+Route::post('pay',[PaymentController::class,'pay'])->name('payment');
+
+Route::get('paywithpaypal',[PaypalController::class,'payWithPaypal'])->name('paywithpaypal');
+Route::post('paypal',[PaypalController::class,'postPaymentWithPaypal'])->name('paypal');
+Route::get('paypal',[PaypalController::class,'getPaymentStatus'])->name('status');
 
 
 
+
+Route::middleware(['auth:sanctum','verified'])->group(function (){
+    Route::get('/user/dashboard',UserDashboardComponent::class)->name('user.dashboard');
+    Route::get('/user/orders',UserOrdersComponent::class)->name('user.orders');
+    Route::get('/user/orders/{order_id}',UserOrdersDetailsComponent::class)->name('user.orderdetails');
+    Route::get('/user/review/{order_item_id}',UserReviewComponent::class)->name('user.review');
+});
+
+
+
+Route::middleware(['auth:sanctum','verified'])->group(function (){
+    Route::get('/admin/dashboard',AdminDashboardComponent::class)->name('admin.dashboard');
+    Route::get('/admin/categories',AdminCategoryComponent::class)->name('admin.categories');
+    Route::get('/admin/category/add',AdminAddCategoryComponent::class)->name('admin.addcategory');
+    Route::get('/admin/category/edit/{category_slug}',AdminEditCategoryComponent::class)->name('admin.editcategory');
+    Route::get('/admin/products',AdminProductComponent::class)->name('admin.products');
+    Route::get('/admin/product/add',AdminAddProductComponent::class)->name('admin.addproduct');
+    Route::get('/admin/product/edit/{product_slug}',AdminEditProductComponent::class)->name('admin.editproduct');
+
+
+    Route::get('/admin/slider',AdminHomeSliderComponent::class)->name('admin.homeslider');
+    Route::get('/admin/slider/add',AdminAddHomeSliderComponent::class)->name('admin.addhomeslider');
+    Route::get('/admin/slider/edit/{slide_id}',AdminEditHomeSliderComponent::class)->name('admin.edithomeslider');
+
+
+    Route::get('/admin/home-categories',AdminHomeCategoryComponent::class)->name('admin.homecategories');
+    Route::get('/admin/sale',AdminSaleComponent::class)->name('admin.sale');
+
+
+    Route::get('/admin/coupons',AdminCouponsComponent::class)->name('admin.coupons');
+    Route::get('admin/coupon/add',AdminAddCouponComponent::class)->name('admin.addcoupon');
+    Route::get('/admin/coupon/edit/{coupon_id}',AdminEditCouponComponent::class)->name('admin.editcoupon');
+
+    Route::get('/admin/orders',AdminOrderComponent::class)->name('admin.orders');
+    Route::get('/admin/orders/{order_id}',AdminOrderDetailsComponent::class)->name('admin.orderdetails');
+
+    Route::get('/admin/contact-us',AdminContactComponent::class)->name('admin.contact');
+
+    Route::get('/admin/settings',AdminSettingComponent::class)->name('admin.settings');
+});
 
 

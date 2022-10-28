@@ -23,13 +23,7 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                if(Auth::user()->userId == 1)
-                {
-                    return redirect()->route('projects1.index');
-                }
-
-                return redirect()->route('projects.index');
-
+                return redirect(RouteServiceProvider::HOME);
             }
         }
 

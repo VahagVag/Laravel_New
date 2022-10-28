@@ -17,17 +17,17 @@ class AuthAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->userId !== 1) {
-            return redirect()->route('projects.index');
-        }
+       if(Auth::user()->utype === 'ADM')
+       {
+           return $next($request);
+       }
+
+       else
+       {
+           session()->flush();
+           return redirect()->route('login');
+       }
 
         return $next($request);
-    }
-
-    protected function redirectTo($request)
-    {
-        if (! $request->expectsJson()) {
-            return '/login';
-        }
     }
 }
